@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Youtube Video n dark screen</title>
+    <style>
+        body {
+    background-color: #1f2d34;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.input-link {
+    width: 400px;
+    height: 40px;
+    margin: 30px auto 20px;
+}
+
+input {
+    background-color: rgba(134, 134, 134, 0.253);
+    color: rgb(174, 174, 174);
+    width: 250px;
+    border: none;
+}
+input[type="text" i] {
+    padding: 8px 2px;
+}
+select {
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    font-family:monospace;
+    text-align: center;
+}
+
+.input-link button {
+    background-color: rgb(56, 56, 56);
+    color: rgb(169, 169, 169);
+    border: 1px solid gray;
+}
+
+#info{
+    width: 480px;
+    margin: 50px auto 0;
+    color: rgb(205, 205, 205);
+    font-size: 20px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+    </style>
+</head>
+
+<body onload="load()">
+    <div class="input-link">
+        <label for="youtube-link"></label>
+        <input type="text" id="youtube-link">
+        <select name="" id="select-resolution">
+            <option value="" selected>Select</option>
+            <option value="1920">1080p</option>
+            <option value="1280">720p</option>
+            <option value="854">480p</option>
+            <option value="640">360p</option>
+            <option value="426">240p</option>
+        </select>
+    </div>
+
+
+    <!-- 854x480 640x360 426x240 -->
+
+    <div id="playHere" class="player">
+        <div id="info">
+            <p>
+                Paste youtube link and select resolution.
+                The video will load automatically.
+                The video is get from youtube by video ID, because of that it could be some cases it can't load.
+            <p>
+                Please, send me to <code>yuchormanski@gmail.com</code> the unplayable link to fix the regex , or
+                do it by yourself!
+            </p>
+            </p>
+            <p>If you want to change resolution you must reload the page.</p>
+            <p style="margin: 0 40%; color: rgb(88, 202, 88)">
+                Enjoy!
+            </p>
+
+        </div>
+    </div>
+</body>
+<script>
+    function load() {
+    const regex = /https:\/\/www\.youtube\.com\/watch\?v=(?<source>[A-Za-z0-9\-]+)/g;
+    const inputs = document.querySelector('.input-link');
+    const inputLink = document.getElementById('youtube-link');
+    const playerPanel = document.getElementById('playHere');
+    const info = document.getElementById('info');
+    const resOption = document.getElementById('select-resolution');
+    resOption.addEventListener('change', playVideo);
+
+    function playVideo(e) {
+
+        let theWidth = null;
+        let theHeight = null;
+        if (resOption.value === '426') {
+            theWidth = '426';
+            theHeight = '240';
+            window.resizeTo(520,300);
+        } else if (resOption.value === '640') {
+            theWidth = '640';
+            theHeight = '360';
+        } else if (resOption.value === '854') {
+            theWidth = '854';
+            theHeight = '480';
+        } else if (resOption.value === '1280') {
+            theWidth = '1280';
+            theHeight = '720';
+        } else if (resOption.value === '1920') {
+            theWidth = '1920';
+            theHeight = '1080';
+        }
+
+        const videoCode = regex.exec(inputLink.value)[1]
+        const embedLink = `https://www.youtube.com/embed/${videoCode}/?controls=1`
+        console.log(embedLink);
+        const videoFrame = document.createElement('iframe');
+        videoFrame.src = embedLink;
+        videoFrame.width = theWidth;
+        videoFrame.height = theHeight;
+        let panelWidth = Number(theWidth) + 2;
+        videoFrame.allowFullscreen = true;
+        playerPanel.appendChild(videoFrame);
+        playerPanel.style.width = `${theWidth}px`;
+        playerPanel.style.margin = '0 auto';
+        
+        inputs.style.display = 'none';
+        info.style.display = 'none';
+    }
+}
+</script>
+</html>
