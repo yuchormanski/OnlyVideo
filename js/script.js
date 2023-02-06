@@ -1,7 +1,7 @@
 window.addEventListener("load", load);
 
 function load() {
-    const regex = /https:\/\/www\.youtube\.com\/watch\?v=(?<source>[A-Za-z0-9\-]+)/g;
+    const regex = /https:\/\/www\.youtube\.com\/watch\?v=(?<source>[A-Za-z0-9_\-]+)/g;
     const inputs = document.querySelector('.input-link');
     const inputLink = document.getElementById('youtube-link');
     const playerPanel = document.getElementById('playHere');
